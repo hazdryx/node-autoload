@@ -35,7 +35,7 @@ function autoload(dir, {obj = { }, filter = /\.js$|\.json$/, recursive = true, n
         else if (filter.test(fname)) {
             // Autoload file if it matches filter and all import.
             const req = require(path);
-            if (typeof(req) === 'object') {
+            if (typeof(req) === 'object' && req !== null && !Array.isArray(req)) {
                 Object.assign(obj, req);
             }
             else {
