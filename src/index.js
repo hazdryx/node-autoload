@@ -16,14 +16,14 @@ const fs = require('fs');
  */
 function autoload(dir, {obj = { }, filter = /\.js$|\.json$/, recursive = true, namespacing = true} = {}) {
     // Loop through all files in the directory.
-    for (file of fs.readdirSync(dir)) {
-        let path = `${dir}/${file}`;
+    for (fname of fs.readdirSync(dir)) {
+        let path = `${dir}/${fname}`;
         if (recursive && fs.lstatSync(path).isDirectory()) {
             // Determain object for namespacing.
             let o = obj;
             if (namespacing) {
-                obj[file] = {};
-                o = obj[file];
+                obj[fname] = {};
+                o = obj[fname];
             }
             // Autoload object.
             autoload(path, {
@@ -32,17 +32,15 @@ function autoload(dir, {obj = { }, filter = /\.js$|\.json$/, recursive = true, n
                 namespacing: namespacing
             });
         }
-        else if (filter.test(file)) {
-            // Autoload file if it matches filter
-            let req = require(path);
+        else if (filter.test(fname)) {
+            // Autoload file if it matches filter and all import.
+            const req = require(path);
             if (typeof(req) === 'object') {
                 Object.assign(obj, req);
             }
-            else if (typeof(req) === 'function' && req.name) {
-                obj[req.name] = req;
-            }
             else {
-                obj[file.substr(0, file.indexOf('.'))] = req;
+                let name = (typeof(req) === 'function' && req.name) ? req.name : file.substr(0, file.indexOf('.'));
+                obj[name] = req;
             }
         }
     }
