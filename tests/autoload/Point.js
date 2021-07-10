@@ -3,7 +3,6 @@ class Point {
         this.x = x;
         this.y = y;
     }
-
     magSq() {
         return this.x * this.x + this.y * this.y;
     }
