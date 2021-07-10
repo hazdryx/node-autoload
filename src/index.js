@@ -12,12 +12,13 @@ const fs = require('fs');
  * 
  * @param {fs.PathLike} dir 
  * @param {AutoloadOptions} options
+ * @return {object} - The object which contains everything.
  */
-function autoload(dir, {obj = module.exports, filter = /\.js$|\.json$/, recursive = true, namespacing = true} = {}) {
+function autoload(dir, {obj = { }, filter = /\.js$|\.json$/, recursive = true, namespacing = true} = {}) {
     // Loop through all files in the directory.
     for (file of fs.readdirSync(dir)) {
         let path = `${dir}/${file}`;
-        if (recursive && fs.lstatSync(file).isDirectory()) {
+        if (recursive && fs.lstatSync(path).isDirectory()) {
             // Determain object for namespacing.
             let o = obj;
             if (namespacing) {
@@ -27,7 +28,8 @@ function autoload(dir, {obj = module.exports, filter = /\.js$|\.json$/, recursiv
             // Autoload object.
             autoload(path, {
                 obj: o,
-                filter: filter
+                filter: filter,
+                namespacing: namespacing
             });
         }
         else if (filter.test(file)) {
@@ -36,7 +38,7 @@ function autoload(dir, {obj = module.exports, filter = /\.js$|\.json$/, recursiv
             if (typeof(req) === 'object') {
                 Object.assign(obj, req);
             }
-            else if (typeof(req) === 'function') {
+            else if (typeof(req) === 'function' && req.name) {
                 obj[req.name] = req;
             }
             else {
@@ -44,5 +46,6 @@ function autoload(dir, {obj = module.exports, filter = /\.js$|\.json$/, recursiv
             }
         }
     }
+    return obj;
 }
-module.exports = autoload();
+module.exports = autoload;
