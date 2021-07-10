@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hazdryx/autoload.git"
+    "url": "git+https://github.com/hazdryx/node-autoload.git"
   },
   "author": "Hazdryx",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hazdryx/autoload/issues"
+    "url": "https://github.com/hazdryx/node-autoload/issues"
   },
-  "homepage": "https://github.com/hazdryx/autoload#readme"
+  "homepage": "https://github.com/hazdryx/node-autoload#readme"
 }
