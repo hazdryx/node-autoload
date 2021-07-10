@@ -1,0 +1,19 @@
+{
+  "name": "@hazdryx/autoload",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hazdryx/autoload.git"
+  },
+  "author": "Hazdryx",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hazdryx/autoload/issues"
+  },
+  "homepage": "https://github.com/hazdryx/autoload#readme"
+}
