@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node tests/autoload.test.js"
   },
   "repository": {
     "type": "git",
