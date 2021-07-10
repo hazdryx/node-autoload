@@ -34,3 +34,16 @@ describe('Multi-Class Loader', () => {
         expect(al.SubUtil.sub(5, 2)).toBe(3);
     });
 });
+//
+// Test if namespacing is working.
+//
+describe('Namespacing', () => {
+    test('loaded Point3 class', () => {
+        expect(typeof(al.threeD.Point3)).toBe('function');
+        expect(al.threeD.Point3.name).toBe('Point3');
+    });
+    test('magSq function works', () => {
+        let pt = new al.threeD.Point3(2, 3, 4);
+        expect(pt.magSq()).toBe(29);
+    });
+});
