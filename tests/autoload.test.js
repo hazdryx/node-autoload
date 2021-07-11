@@ -50,6 +50,14 @@ function testPoint3(al, desc) {
         });
     });
 }
+/**
+ * Test NotLoaded.cjs is not loaded.
+ */
+function testNotLoaded(al) {
+    test('.cjs aren\'t loaded by default', () => {
+        expect(al.NotLoaded).toBeUndefined();
+    })
+}
 
 // 
 // TESTING STARTS HERE
@@ -61,6 +69,7 @@ describe('Testing defaults', () => {
     testClassLoader(al);
     testMultiClassLoader(al);
     testPoint3(al.threeD, 'Namespacing & Recursion');
+    testNotLoaded(al);
 });
 
 //
@@ -74,9 +83,10 @@ describe('Testing no recursion', () => {
 
     testClassLoader(al);
     testMultiClassLoader(al);
+    testNotLoaded(al);
 
     test('threeD should not load', () => {
-        expect(al.threeD).toBe(undefined);
+        expect(al.threeD).toBeUndefined();
     });
 });
 
@@ -92,4 +102,29 @@ describe('Testing no namespacing', () => {
     testClassLoader(al);
     testMultiClassLoader(al);
     testPoint3(al, 'Point3 at top-level');
+    testNotLoaded(al);
 });
+
+//
+// .cjs files added to filter
+//
+describe('Testing .cjs in filter', () => {
+    const al = require('../')(__dirname + '/autoload', {
+        filter: /\.js$|\.cjs$|\.json$/
+    });
+    console.log(al);
+
+    testClassLoader(al);
+    testMultiClassLoader(al);
+    testPoint3(al.threeD, 'Namespacing & Recursion');
+
+    describe('.cjs Was Loaded', () => {
+        test('NotLoaded was Loaded', () => {
+            expect(typeof(al.NotLoaded)).toBe('function');
+            expect(al.NotLoaded.name).toBe('');
+        });
+        test('NotLoaded.test() works', () => {
+            expect(al.NotLoaded()).toBe(42);
+        });
+    });
+})

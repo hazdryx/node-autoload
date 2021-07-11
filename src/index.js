@@ -33,13 +33,13 @@ function autoload(dir, {obj = { }, filter = /\.js$|\.json$/, recursive = true, n
             });
         }
         else if (filter.test(fname)) {
-            // Autoload file if it matches filter and all import.
+            // Autoload file if it matches filter.
             const req = require(path);
             if (typeof(req) === 'object' && req !== null && !Array.isArray(req)) {
                 Object.assign(obj, req);
             }
             else {
-                let name = (typeof(req) === 'function' && req.name) ? req.name : file.substr(0, file.indexOf('.'));
+                let name = (typeof(req) === 'function' && req.name) ? req.name : fname.substr(0, fname.indexOf('.'));
                 obj[name] = req;
             }
         }
