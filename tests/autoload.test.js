@@ -36,9 +36,22 @@ function testMultiClassLoader(al) {
     });
 }
 /**
+ * Test if a json file was loaded correctly. 
+ */
+function testJsonLoader(al) {
+    describe('JSON Loader', () => {
+        test('loaded config', () => {
+            expect(typeof(al.config)).toBe('object');
+        });
+        test('loaded correct values', () => {
+            expect(al.config.hello).toBe('world');
+        });
+    });
+}
+/**
  * Tests Point3 class.
  */
-function testPoint3(al, desc) {
+function testNamespacing(al, desc = 'Namespacing') {
     describe(desc, () => {
         test('loaded Point3 class', () => {
             expect(typeof(al.Point3)).toBe('function');
@@ -64,11 +77,11 @@ function testNotLoaded(al) {
 //
 describe('Testing defaults', () => {
     const al = require('../')(__dirname + '/autoload');
-    console.log(al);
 
     testClassLoader(al);
     testMultiClassLoader(al);
-    testPoint3(al.threeD, 'Namespacing & Recursion');
+    testJsonLoader(al);
+    testNamespacing(al.threeD);
     testNotLoaded(al);
 });
 
@@ -79,10 +92,10 @@ describe('Testing no recursion', () => {
     const al = require('../')(__dirname + '/autoload', {
         recursive: false
     });
-    console.log(al);
 
     testClassLoader(al);
     testMultiClassLoader(al);
+    testJsonLoader(al);
     testNotLoaded(al);
 
     test('threeD should not load', () => {
@@ -97,11 +110,11 @@ describe('Testing no namespacing', () => {
     const al = require('../')(__dirname + '/autoload', {
         namespacing: false
     });
-    console.log(al);
 
     testClassLoader(al);
     testMultiClassLoader(al);
-    testPoint3(al, 'Point3 at top-level');
+    testJsonLoader(al);
+    testNamespacing(al);
     testNotLoaded(al);
 });
 
@@ -112,11 +125,11 @@ describe('Testing .cjs in filter', () => {
     const al = require('../')(__dirname + '/autoload', {
         filter: /\.js$|\.cjs$|\.json$/
     });
-    console.log(al);
 
     testClassLoader(al);
     testMultiClassLoader(al);
-    testPoint3(al.threeD, 'Namespacing & Recursion');
+    testJsonLoader(al);
+    testNamespacing(al.threeD);
 
     describe('.cjs Was Loaded', () => {
         test('NotLoaded was Loaded', () => {
@@ -127,4 +140,4 @@ describe('Testing .cjs in filter', () => {
             expect(al.NotLoaded()).toBe(42);
         });
     });
-})
+});
